@@ -4,7 +4,9 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+    <SwitchMenu>
     <router-view/>
+    </SwitchMenu>
   </div>
 </template>
 
@@ -30,3 +32,14 @@
   color: #42b983;
 }
 </style>
+
+<script>
+import SwitchMenu from "./components/SwitchMenu.vue"
+export default {
+  name: 'Main',
+  components: {
+    SwitchMenu
+  }
+  
+}
+</script>
