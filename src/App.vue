@@ -108,6 +108,7 @@
   display: flex;
   min-height: 100vh;
   min-width: 100%;
+  flex-grow: 1;
   position: relative;
   flex-direction: column;
   align-items: stretch;
