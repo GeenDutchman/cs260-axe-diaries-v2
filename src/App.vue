@@ -2,6 +2,7 @@
   <div id="app" class="back-color-primary-0 color-primary-1 switch-lg-row-to-sm-col">
     <switch-menu/>
     <router-view/>
+    <axe-footer/>
   </div>
 </template>
 
@@ -43,8 +44,9 @@
 
 .full {
   display: flex;
-  min-height: 100vh;
-  min-width: 100%;
+  /* min-height: 100vh;
+  min-width: 100%; */
+  flex-grow: 1;
   position: relative;
   align-items: stretch;
 
@@ -97,10 +99,12 @@
 
 <script>
 import SwitchMenu from "./components/SwitchMenu.vue"
+import AxeFooter from "./components/AxeFooter.vue"
 export default {
   name: 'Main',
   components: {
     SwitchMenu,
+    AxeFooter,
   }
   
 }
