@@ -60,13 +60,17 @@
   flex-grow: 1;
   position: relative;
   align-items: stretch;
-
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 2rem;
   flex-direction: column;
 }
 
 .section {
   display: flex;
   flex-direction: column !important;
+  font-size: 120%;
+  font-weight: bolder;
 }
 
 .switch-sm-row-to-lg-col {
