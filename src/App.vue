@@ -13,6 +13,17 @@
   box-sizing: border-box;
 }
 
+/* CSS - Cascading Style Sheet 
+   Palette color codes 
+   Palette URL: http://paletton.com/#uid=1000u0k0yik06tE++nu0XcM265X 
+
+   Feel free to copy&paste color codes to your application 
+
+
+   As hex codes
+
+   COLORS!! **/
+
 :root {
   --color-primary-0: #929090;
   --color-primary-1: #ECECEC;
