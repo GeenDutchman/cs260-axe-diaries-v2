@@ -22,7 +22,7 @@
       <div id="menu-list" class="collapse navbar-dark navbar-collapse switch-sm-row-to-lg-col">
         <ul class="nav nav-pills switch-sm-row-to-lg-col">
           <li class="nav-item">
-            <router-link to="/">Home</router-link>
+            <router-link to="/account">Account</router-link>
           </li>
         </ul>
       </div>

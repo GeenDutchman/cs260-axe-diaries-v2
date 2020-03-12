@@ -68,7 +68,7 @@
 
 .section {
   display: flex;
-  flex-direction: column !important;
+  flex-direction: column;
   font-size: 120%;
   font-weight: bolder;
 }
@@ -97,6 +97,8 @@
     display: flex;
     flex-direction: row !important;
     width: 100%;
+    height: auto;
+    justify-content: space-around;
   }
 }
 </style>
