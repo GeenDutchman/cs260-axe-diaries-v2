@@ -19,17 +19,10 @@
 </template>
 
 <style scoped>
-.switch-sm-row-to-lg-col {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
 @media (min-width: 992px) {
-  .switch-sm-row-to-lg-col {
-    flex-direction: column !important;
-    width: auto;
-    justify-content: flex-start;
+  .navbar {
+    height: 100%;
+    margin-right: 5px;
   }
 }
 </style>
