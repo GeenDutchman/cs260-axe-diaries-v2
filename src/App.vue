@@ -103,6 +103,9 @@
 }
 </style>
 
+<style src="../public/fonts.css">
+</style>
+
 <style scoped>
 #app {
   display: flex;

@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Account from '../views/Account.vue'
 import About from '../views/About.vue'
 import Parties from '../views/Parties.vue'
+import PartyIntro from '../views/PartyIntro.vue'
 
 Vue.use(VueRouter)
 
@@ -18,9 +19,14 @@ const routes = [
     name: 'Account',
     component: Account
   },{
-    path: '/parties/',
+    path: '/parties',
     name: 'Parties',
     component: Parties,
+  },
+  {
+    path: '/parties/:id',
+    name: 'PartyIntro',
+    component: PartyIntro,
   },
   {
     path: '/about',
