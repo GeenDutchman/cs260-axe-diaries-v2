@@ -79,7 +79,15 @@ var data = {
             "parents."
         }
       ],
-      party_page: undefined
+      party_page: undefined,
+      party_entries: [
+        {
+          text: "Me like my stick!",
+          author_name: "Mon-da-hir",
+          author_id: 3,
+          author_script: "barbarian-script"
+        }
+      ]
     }
   ]
 }
