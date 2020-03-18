@@ -45,7 +45,7 @@
 .back-color-primary-4 { background-color: var(--color-primary-4) }
 
 .brand {
-  background-image: url("./assets/logo.png");
+  background-image: url("../public/assets/logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

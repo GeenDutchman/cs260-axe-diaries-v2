@@ -5,7 +5,7 @@
       class="nav navbar navbar-expand-lg navbar-dark back-color-primary-2 switch-sm-row-to-lg-col nav-pills"
     >
       <router-link to="/">
-        <img src="../assets/logo.png" width="50" height="auto" alt="Axe diaries logo" />
+        <img src="../../public/assets/logo.png" width="50" height="auto" alt="Axe diaries logo" />
       </router-link>
       <button
         id="menu-toggle"
