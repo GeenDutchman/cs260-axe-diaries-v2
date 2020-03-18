@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Account from '../views/Account.vue'
 import About from '../views/About.vue'
+import Parties from '../views/Parties.vue'
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,10 @@ const routes = [
     path: '/account',
     name: 'Account',
     component: Account
+  },{
+    path: '/parties/',
+    name: 'Parties',
+    component: Parties,
   },
   {
     path: '/about',

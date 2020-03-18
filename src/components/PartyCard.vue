@@ -1,13 +1,13 @@
 <template>
-<div class="card back-color-primary-1">
-    <a :href="link">
-        <img class="card-img-top" :src="image_src" :alt="imageAlt" />
-    </a>
+<div class="card back-color-primary-1 color-primary-4">
+    <router-link :to="link">
+        <img class="card-img-top" :src="src" :alt="party_name" />
+    </router-link>
     <div class="card-body">
         <h5 class="card-title" v-text="party_name"></h5>
-        <p id="party_description" v-text="party_description"></p>
+        <p id="party_description" class="container-fluid collapse" v-text="party_description"></p>
         <a href="#party_description" class="btn btn-secondary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="#party_description">Expand</a>
-        <a :href="link" class="btn btn-primary">Go!</a>
+        <router-link :to="link" class="btn btn-primary">Go!</router-link>
     </div>
 </div>
     
@@ -17,7 +17,7 @@
 export default {
     name: 'PartyCard',
     props: {
-        image_src: String,
+        src: String,
         party_name: String,
         party_description: String,
         party_members: Array,
@@ -25,8 +25,8 @@ export default {
         link: String,
     },
     computed: {
-        imageAlt() {
-            return this.props.party_name + " image";
+        imageAlt(name) {
+            return name + " image";
         }
     }
 }

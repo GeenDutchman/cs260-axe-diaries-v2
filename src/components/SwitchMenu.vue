@@ -25,6 +25,9 @@
             <router-link to="/account">Account</router-link>
           </li>
           <li class="nav-item">
+            <router-link to="/parties">Parties</router-link>
+          </li>
+          <li class="nav-item">
             <router-link to="/about">About</router-link>
           </li>
         </ul>
