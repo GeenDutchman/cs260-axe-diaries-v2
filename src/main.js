@@ -7,6 +7,7 @@ Vue.config.productionTip = false
 var data = {
   parties: [
     {
+      party_id: 0,
       party_name: "Irregular Hyenas",
       party_image: undefined,
       party_description: "Flee through the jungle",
@@ -14,7 +15,8 @@ var data = {
         {
           adventurer_id: 0,
           adventurer_name: "Artimis",
-          adventurer_class: "wizard",
+          adventurer_class: "Wizard",
+          adventurer_script: "wizard-script",
           adventurer_intro: "I am Artimis, and I am a daughter of Thom Bosman and Hilyard " +
             "Mainsman. They are rather successful merchants from the Krik river. " +
             "Because of their patronage, I was able to attend the Wizarding " +
@@ -29,7 +31,8 @@ var data = {
         {
           adventurer_id: 1,
           adventurer_name: "Handre of Hegwaard",
-          adventurer_class: "druid",
+          adventurer_class: "Druid",
+          adventurer_script: "druid-script",
           adventurer_intro: "Sometimes I must doubt the things I've heard. I'm really not from " +
             "this continent. I was learning from the Gnomes on J'Dert when they " +
             "suddenly prophesied that I needed to go to Nederska and restore " +
@@ -43,7 +46,8 @@ var data = {
         {
           adventurer_id: 2,
           adventurer_name: "Emmfa",
-          adventurer_class: "fighter",
+          adventurer_class: "Fighter",
+          adventurer_script: "fighter-script",
           adventurer_intro: "Hi! Yes I'm a halfling, but at least I'm taller than my Mom! I have " +
             "way to much of a story to tell here, but, to summarize: I have waay " +
             "too many sisters, and we don't really get along. I am number 7 of " +
@@ -59,7 +63,8 @@ var data = {
         {
           adventurer_id: 3,
           adventurer_name: "Mon-da-hir",
-          adventurer_class: "barbarian",
+          adventurer_class: "Barbarian",
+          adventurer_script: "barbarian-script",
           adventurer_intro: "I'm Mon-da-hir. I am elf, raisd by wolven. They teach me how to hunt, " +
             "smel, and eat. One day I find big stick holding wolvbrother down. I " +
             "pick up and kep. I use to smash smal goblin when they attacking us. We " +
