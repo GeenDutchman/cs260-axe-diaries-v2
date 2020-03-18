@@ -82,10 +82,32 @@ var data = {
       party_page: undefined,
       party_entries: [
         {
+          entry_id: 1,
+          text: "This Mon-da-hir and I were about to set out, but I seem to have caught a cold of some kind, and so we must delay our departure.  I do not anticipate that this will have too many adverse effects...except I find it hard to cast any spells with this headache.",
+          author_name: "Artimis",
+          author_id: 0,
+          author_script: "wizard-script",
+          date: "27th day of Zonmaan",
+        },
+        {
+          entry_id: 0,
           text: "Me like my stick!",
           author_name: "Mon-da-hir",
           author_id: 3,
           author_script: "barbarian-script"
+        },
+      ]
+    }
+  ],
+  users: [
+    {
+      user_id: 0,
+      username: "ArtyWizard",
+      plain_password: "password",
+      parties: [
+        {
+          party_id: 0,
+          member_id: 0
         }
       ]
     }
