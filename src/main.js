@@ -10,7 +10,7 @@ var data = {
       party_id: 0,
       party_name: "Irregular Hyenas",
       party_image: undefined,
-      party_description: "Flee through the jungle",
+      party_description: undefined,
       party_members: [
         {
           adventurer_id: 0,

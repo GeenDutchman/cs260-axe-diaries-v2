@@ -1,0 +1,40 @@
+@import url(//db.onlinewebfonts.com/c/59e1f8062e63a014fa00c78610077806?family=BPchildLefty);
+@import url("https://fonts.googleapis.com/css?family=Cedarville+Cursive|Gochi+Hand|Patrick+Hand&display=swap");
+
+
+@font-face {
+  font-family: "BPchildLefty";
+  src: url("//db.onlinewebfonts.com/t/59e1f8062e63a014fa00c78610077806.eot");
+  src: url("//db.onlinewebfonts.com/t/59e1f8062e63a014fa00c78610077806.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/59e1f8062e63a014fa00c78610077806.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/59e1f8062e63a014fa00c78610077806.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/59e1f8062e63a014fa00c78610077806.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/59e1f8062e63a014fa00c78610077806.svg#BPchildLefty")
+      format("svg");
+}
+
+
+
+.barbarian-script {
+  font-family: "BPchildLefty", sans-serif;
+  font-size: large;
+  font-weight: 600;
+}
+
+.druid-script {
+  font-family: "Patrick Hand", cursive;
+}
+
+.fighter-script {
+  font-family: "Gochi Hand", fantasy;
+}
+
+.wizard-script {
+  font-family: "Cedarville Cursive", monospace;
+  font-size: large;
+  font-weight: 600;
+}

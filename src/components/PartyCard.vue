@@ -6,7 +6,7 @@
     <div class="card-body">
         <h5 class="card-title" v-text="party_name"></h5>
         <div :id="idGenerator('party_description', party_id)" class="container-fluid collapse">
-            {{party_description}}
+            <span v-if="party_description">{{party_description}}</span>
             <div class="row" v-if="party_members.length > 0">
                 <div class="col-6">
                     <h6>Name:</h6>
