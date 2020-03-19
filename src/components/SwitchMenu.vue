@@ -22,13 +22,13 @@
       <div id="menu-list" class="collapse navbar-dark navbar-collapse switch-sm-row-to-lg-col">
         <ul class="nav nav-pills switch-sm-row-to-lg-col">
           <li class="nav-item">
-            <router-link to="/account">Account</router-link>
+            <router-link class="nav-link" to="/account">Account</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/parties">Parties</router-link>
+            <router-link class="nav-link" to="/parties">Parties</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/about">About</router-link>
+            <router-link class="nav-link" to="/about">About</router-link>
           </li>
         </ul>
       </div>
@@ -37,6 +37,15 @@
 </template>
 
 <style scoped>
+.nav-pills .nav-link {
+  background-color: var(--color-primary-4);
+  margin: 5px;
+}
+
+.nav-pills .nav-link :hover {
+  background-color: var(--color-primary-3);
+}
+
 @media (min-width: 992px) {
   .navbar {
     height: 100%;
