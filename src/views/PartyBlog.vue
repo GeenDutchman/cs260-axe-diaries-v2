@@ -24,7 +24,7 @@ export default {
     },
     data() {
         return {
-            adder_enabled: true
+            adder_enabled: false
         }
     },
     computed: {
