@@ -6,10 +6,10 @@
         <hr />
         <div v-for="entry in blogEntries" :key="entry.entry_id" :class="[ 'card', entry.author_script,  'section', 'blogItem', 'color-primary-4']" >
             <p>{{entry.text}}</p>
-            <p class="right">--<span v-text="(entry.date ? entry.date  + '-': '')"></span><span>{{entry.author_name}}</span></p>
+            <p class="signature">——{{(entry.date ? entry.date  + '——': '')}}{{entry.author_name}}</p>
         </div>
         <div class="section center">
-            <p>There are no earlier posts</p>
+            <router-link to='/' tag="p">There are no earlier posts</router-link>
         </div>
     </div>
 </template>
@@ -29,10 +29,11 @@ export default {
 </script>
 
 <style scoped>
-.right {
+.signature {
     display: flex;
     justify-items: end;
     margin-left: auto;
+    text-align: end;
 }
 
 .center {
@@ -44,7 +45,7 @@ export default {
     display: flex;
     justify-content: space-around;
     max-width: 70%;
-    min-width: 60rem;
+    min-width: min-content;
     align-self: center;
     padding: 1rem;
     margin: 1rem;
