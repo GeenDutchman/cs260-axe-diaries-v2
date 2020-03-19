@@ -8,21 +8,36 @@
             <p>{{entry.text}}</p>
             <p class="signature">——{{(entry.date ? entry.date  + '——': '')}}{{entry.author_name}}</p>
         </div>
+        <BlogAdder v-if="adder_enabled" ></BlogAdder>
         <div class="section center">
-            <router-link to='/' tag="p">There are no earlier posts</router-link>
+            <p @click="toggleAdder">There are no earlier posts</p>
         </div>
     </div>
 </template>
 
 <script>
+import BlogAdder from "../components/BlogAdder.vue";
 export default {
     name: 'PartyBlog',
+    components: {
+        BlogAdder
+    },
+    data() {
+        return {
+            adder_enabled: true
+        }
+    },
     computed: {
         blogEntries() {
             return this.$root.$data.parties[this.$route.params.id].party_entries;
         },
         party() {
             return this.$root.$data.parties[this.$route.params.id];
+        }
+    },
+    methods: {
+        toggleAdder() {
+            this.adder_enabled = !this.adder_enabled;
         }
     }
 }
