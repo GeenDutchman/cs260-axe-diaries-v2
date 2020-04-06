@@ -1,6 +1,6 @@
 <template>
     <footer class="">
-        <a href="https://github.com/GeenDutchman/cs260-axe-diaries-v2">My assignment repository.</a>
+        <a href="https://github.com/GeenDutchman/cs260-axe-diaries-v2/tree/db-master">My assignment repository.</a>
     </footer>
 </template>
 
