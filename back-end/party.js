@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const users = require("./users.js")
 const router = express.Router();
 
+const User = users.model;
 const validUser = users.valid;
 
 const partySchema = new mongoose.Schema({
@@ -92,10 +93,40 @@ router.post('/create', validUser, async (req, res) => {
             party: party
         });
     } catch (error) {
-        console.error(error);
+        console.error('party create', error);
         return res.sendStatus(500);
     }
 });
+
+router.get("/", async (req, res) => {
+    let parties = [];
+    try {
+        parties = Party.find();
+        return res.send({
+            parties: parties
+        });
+    } catch (error) {
+        console.error('party get all', error);
+        return res.sendStatus(500);
+    }
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        const party = Party.findById(req.params.id);
+        if (!party) {
+            return req.status(400).send({
+                message: 'not a party'
+            });
+        }
+        req.send({
+            party: party
+        });
+    } catch (error) {
+        console.error('party get id', error);
+        return res.sendStatus(500);
+    }
+})
 
 router.delete('/destroy', validUser, async (req, res) => {
     if (req.user.role !== 'admin person') {
@@ -111,7 +142,7 @@ router.delete('/destroy', validUser, async (req, res) => {
     try {
         await Party.findByIdAndDelete(req.body.party_id);
     } catch (error) {
-        console.log(error);
+        console.error('party destroy', error);
         return res.sendStatus(500); 
     }
 });
@@ -141,7 +172,7 @@ router.put('/join', validUser, async (req, res) => {
 
         res.sendStatus(200);
     } catch (error) {
-        console.log(error);
+        console.error('party join', error);
         return res.sendStatus(500);  
     }
 });
@@ -162,7 +193,7 @@ router.delete('/leave', validUser, validMember, async (req, res) => {
 
         res.sendStatus(200);
     } catch (error) {
-        console.log(error);
+        console.error('party leave', error);
         return res.sendStatus(500);  
     }
 });

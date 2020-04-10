@@ -38,7 +38,7 @@ userSchema.pre('save', async function (next) {
         this.password = hash;
         next();
     } catch (error) {
-        console.log(error);
+        console.error('user pre save', error);
         next(error);
     }
 });
@@ -93,6 +93,7 @@ const validUser = async (req, res, next) => {
         req.user = user;
     } catch (error) {
         // Return an error if user does not exist.
+        console.error('valid user', error);
         return res.status(403).send({
             message: "not logged in"
         });
@@ -147,7 +148,7 @@ router.post('/register', async (req, res) => {
             user: user
         });
     } catch (error) {
-        console.log(error);
+        console.error('user register', error);
         return res.sendStatus(500);
     }
 });
@@ -182,55 +183,11 @@ router.post('/login', async (req, res) => {
             user: user
         });
     } catch (error) {
-        console.log(error);
+        console.error('user login', error);
         return res.sendStatus(500);
     }
 });
 
-router.put('/party', validUser, async (req, res) => {
-    if (!req.party_id) {
-        return res.status(400).send({
-            message: "no party provided"
-        });
-    }
-    try {
-        if (!req.user.parties.includes(req.party_id)) {
-            req.user.parties.push(req.party_id);
-            await req.user.save();
-        } else {
-            res.status(400).send({
-                message: "user already member of that party"
-            });
-        }
-        res.sendStatus(200);
-    } catch (error) {
-        console.log(error);
-        return res.sendStatus(500);
-    }
-});
-
-router.delete('/party', validUser, async (req, res) => {
-    if (!req.party_id) {
-        return res.status(400).send({
-            message: "no party provided"
-        });
-    }
-    try {
-        var index = req.user.parties.index(req.party_id);
-        if (index !== -1) {
-            req.user.parties.splice(index);
-            await req.user.save();
-        } else {
-            res.status(400).send({
-                message: "user was not member of that party"
-            });
-        }
-        res.sendStatus(200);
-    } catch (error) {
-        console.log(error);
-        return res.sendStatus(500);
-    }
-});
 
 // get logged in user
 router.get('/', validUser, async (req, res) => {
@@ -239,7 +196,7 @@ router.get('/', validUser, async (req, res) => {
             user: req.user
         });
     } catch (error) {
-        console.log(error);
+        console.error('get / user', error);
         return res.sendStatus(500);
     }
 });
@@ -257,7 +214,7 @@ router.post('/', validUser, async (req, res) => {
             users: users
         });        
     } catch (error) {
-        console.error(error);
+        console.error('post / user', error);
         return res.status(400).send({
             message: "Error getting users"
         });
@@ -265,12 +222,12 @@ router.post('/', validUser, async (req, res) => {
 });
 
 // logout
-router.delete("/", validUser, async (req, res) => {
+router.delete("/logout", validUser, async (req, res) => {
     try {
         req.session = null;
         res.sendStatus(200);
     } catch (error) {
-        console.log(error);
+        console.error('logout user', error);
         return res.sendStatus(500);
     }
 });

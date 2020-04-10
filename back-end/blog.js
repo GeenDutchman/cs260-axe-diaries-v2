@@ -37,13 +37,14 @@ router.post("/", validUser, validMember, async (req, res) => {
             entry: entry
         });
     } catch (error) {
-        console.error(error);
+        console.error('blog post', error);
         return res.sendStatus(500);       
     }
 });
 
+
 router.get("/:id", async (req, res) => {
-    let entries = []
+    let entries = [];
     try {
         entries = Entry.find({
             party_id: req.params.id
@@ -52,7 +53,7 @@ router.get("/:id", async (req, res) => {
             entries: entries
         });
     } catch (error) {
-        console.error(error);
+        console.error('blog get id', error);
         return res.sendStatus(500);
     }
 });
