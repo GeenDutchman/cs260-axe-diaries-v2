@@ -10,9 +10,7 @@ const userSchema = new mongoose.Schema({
     family_name: String,
     hails_from: String,
     party_role: String,
-    intro: {
-        type: String,
-    },
+    intro: String,
     script: String,
     username: String,
     password: String,
@@ -134,11 +132,12 @@ router.post('/register', async (req, res) => {
         const user = new User({
             given_name: req.body.given_name,
             family_name: req.body.family_name,
-            hails_from: req.body.family_name,
+            hails_from: req.body.hails_from,
             party_role: req.body.party_role,
             script: req.body.script,
             username: req.body.username,
             password: req.body.password,
+            intro: req.body.intro,
         });
         await user.save();
         // set user session info
@@ -158,7 +157,7 @@ router.post('/login', async (req, res) => {
     // Make sure that the form coming from the browser includes a username and a
     // password, otherwise return an error.
     if (!req.body.username || !req.body.password)
-        return res.sendStatus(400);
+        return res.status(400).send({message: "username and password required"});
 
     try {
         //  lookup user record
@@ -202,14 +201,18 @@ router.get('/', validUser, async (req, res) => {
 });
 
 //get a list of users
-router.post('/', validUser, async (req, res) => {
-    if (!req.ids || req.ids.length === 0) {
+router.post('/', async (req, res) => {
+    if (!req.body.ids || req.body.ids.length === 0) {
         return res.status(400).send({
             message: "no ids provided"
         });
     }
     try {
-        let users = req.ids.map(await User.findById);
+        let users = req.body.ids.map(async (id) => {
+            return await User.findById(id);
+        });
+        users = await Promise.all(users);
+        console.log(users);
         res.send({
             users: users
         });        

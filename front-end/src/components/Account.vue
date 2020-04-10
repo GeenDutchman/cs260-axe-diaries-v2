@@ -25,6 +25,7 @@
                   aria-describedby="real name"
                   placeholder="Given Name"
                   required
+                  v-model="given_name"
                 />
               </div>
               <div class="form-group">
@@ -35,6 +36,7 @@
                   id="form_family_name"
                   aria-describedby="family name"
                   placeholder="Family Name"
+                  v-model="family_name"
                 />
               </div>
               <div class="form-group">
@@ -45,6 +47,7 @@
                   id="form_hail_from"
                   aria-describedby="Hail from"
                   placeholder="Hegwaard"
+                  v-model="hails_from"
                 />
               </div>
               <div class="form-group">
@@ -56,6 +59,7 @@
                   aria-describedby="Role in party"
                   placeholder="Fighter"
                   required
+                  v-model="party_role"
                 />
               </div>
               <div class="form-group">
@@ -66,6 +70,7 @@
                   id="form_username_sign_up"
                   aria-describedby="username entry"
                   placeholder="Enter username"
+                  v-model="r_username"
                 />
               </div>
               <div class="form-group">
@@ -75,6 +80,7 @@
                   class="form-control"
                   id="password_sign_up_1"
                   placeholder="Password"
+                  v-model="r_password"
                 />
               </div>
               <div class="form-group">
@@ -84,9 +90,10 @@
                   class="form-control"
                   id="password_sign_up_2"
                   placeholder="Password Again"
+                  v-model="r_password_2"
                 />
               </div>
-              <button type="submit" class="btn btn-primary" disabled>Submit</button>
+              <button type="submit" class="btn btn-primary" @click.prevent="register">Submit</button>
             </form>
           </div>
         </div>
@@ -110,6 +117,7 @@
                   id="form_username_sign_in"
                   aria-describedby="uername entry"
                   placeholder="Enter username"
+                  v-model="l_username"
                 />
               </div>
               <div class="form-group">
@@ -119,9 +127,10 @@
                   class="form-control"
                   id="password_sign_in"
                   placeholder="Password"
+                  v-model="l_password"
                 />
               </div>
-              <button type="submit" class="btn btn-primary" disabled>Submit</button>
+              <button type="submit" class="btn btn-primary" @click.prevent="login">Submit</button>
             </form>
           </div>
         </div>
@@ -131,8 +140,71 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: "Account",
+    data() {
+      return {
+        given_name: '',
+        family_name: '',
+        hails_from: '',
+        party_role: '',
+        intro: 'a hero',
+        script: 'wizard-script',
+        r_username: '',
+        r_password: '',
+        r_password_2: '',
+        l_username: '',
+        l_password: '',
+      };
+    },
+    methods: {
+      async login() {
+        if (!this.l_username || !this.l_password) {
+          return;
+        }
+        try {
+          let response = await axios.post('/api/users/login', {
+            username: this.l_username,
+            password: this.l_password
+          });
+          await this.$root.getUser(response.data.user, true);
+        } catch (error) {
+          console.error(error);
+          await this.$root.getUser(undefined, true);
+        }
+        this.l_username = '';
+        this.l_password = '';
+      },
+      async register() {
+        if (!this.given_name || !this.r_username || !this.r_password || this.r_password !== this.r_password_2) {
+          return;
+        }
+        try {
+          let response = await axios.post('/api/users/register', {
+            given_name: this.given_name,
+            family_name: this.family_name,
+            hails_from: this.hails_from,
+            party_role: this.party_role,
+            intro: this.intro,
+            script: this.script,
+            username: this.r_username,
+            password: this.r_password_2
+          });
+          await this.$root.getUser(response.data.user, true);
+        } catch (error) {
+          console.error(error);
+          await this.$root.getUser(undefined, true);
+        }
+        this.given_name = '';
+        this.family_name = '';
+        this.hails_from = '';
+        this.party_role = '';
+        this.r_username = '';
+        this.r_password = '';
+        this.r_password_2 = '';
+      }
+    }
 }
 </script>
 

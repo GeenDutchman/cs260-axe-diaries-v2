@@ -4,8 +4,8 @@
     <h2>Add an entry</h2>
     <form @submit.prevent="addEntry" class="form-group adderForm">
       <select id="personSelector" class="form-control" v-model="adventurer" aria-placeholder="Select a party member">
-        <option :value="undefined">Select a  party member</option>
-        <option v-for="person in members" :key="person.adventurer_id" :value="person">{{person.adventurer_name}}</option>
+        <option :value="undefined">Select a party member</option>
+        <option v-for="person in this.$parent.members" :key="person._id" :value="person">{{person.given_name}}</option>
       </select>
       <p></p>
       <textarea v-model="entry" class="form-control" required placeholder="What happened?"></textarea>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: "BlogAdder",
 //   props: {
@@ -28,23 +29,30 @@ export default {
     return {
       adventurer: undefined,
       entry: "",
-      date: undefined
+      date: undefined,
     };
   },
   computed: {
-    members() {
-      return this.$root.$data.parties[this.$route.params.id].party_members;
-    },
     enableSubmit() {
       return this.adventurer !== undefined && this.entry.length > 0;
     }
   },
+  created() {
+  },
   methods: {
-    addEntry() {
+    async addEntry() {
       if (this.adventurer !== undefined && this.entry.length > 0) {
-        let entries = this.$root.$data.parties[this.$route.params.id].party_entries;
-        const newEntry = {entry_id: entries.length, text: this.entry, author_name: this.adventurer.adventurer_name, author_id: this.adventurer.adventurer_id, author_script: this.adventurer.adventurer_script};
-        entries.unshift(newEntry);
+        // let entries = this.$root.$data.parties[this.$route.params.id].party_entries;
+        // const newEntry = {entry_id: entries.length, text: this.entry, author_name: this.adventurer.adventurer_name, author_id: this.adventurer.adventurer_id, author_script: this.adventurer.adventurer_script};
+        // entries.unshift(newEntry);
+        let entry = {text: this.entry, author_id: await this.$root.getUser()._id, date: (this.date ? this.date : ''), party_id: this.$route.params.id};
+        try {
+          let result = await axios.post('/api/blog/', entry);
+          console.log(result);
+          this.$parent.blogEntries.push(result.data.entry);
+        } catch (error) {
+          console.error(error);
+        }
         this.adventurer = undefined;
         this.entry = '';
         this.date = '';

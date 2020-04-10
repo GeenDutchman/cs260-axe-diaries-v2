@@ -15,9 +15,9 @@
                     <h6>Role:</h6>
                 </div>
             </div>
-            <div v-for="person in party_members" :key="person.adventurer_id" :class="[person.adventurer_script, 'row']">
-                <div class="col-6">{{person.adventurer_name}}</div>
-                <div class="col-6">{{person.adventurer_class}}</div>
+            <div v-for="person in party_members" :key="person._id" :class="[person.script, 'row']">
+                <div class="col-6">{{person.given_name}}</div>
+                <div class="col-6">{{person.party_role}}</div>
             </div>
         </div>
         <a :href="idGenerator('#party_description', party_id)" class="btn btn-secondary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="#party_description">Expand</a>
@@ -32,7 +32,7 @@ export default {
     name: 'PartyCard',
     props: {
         src: String,
-        party_id: Number,
+        party_id: String,
         party_name: String,
         party_description: String,
         party_members: Array,

@@ -126,11 +126,13 @@ h2 {
 <script>
 import SwitchMenu from "./components/SwitchMenu.vue"
 import AxeFooter from "./components/AxeFooter.vue"
+// import AccountWall from "./views/AccountWall.vue"
 export default {
   name: 'Main',
   components: {
     SwitchMenu,
     AxeFooter,
+    // AccountWall,
   }
   
 }

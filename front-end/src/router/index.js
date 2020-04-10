@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Account from '../views/Account.vue'
+import AccountWall from '../views/AccountWall.vue'
 import About from '../views/About.vue'
 import Parties from '../views/Parties.vue'
 import PartyIntro from '../views/PartyIntro.vue'
 import PartyBlog from '../views/PartyBlog.vue'
+import MakeParty from '../views/MakeParty.vue'
 
 Vue.use(VueRouter)
 
@@ -18,13 +19,16 @@ const routes = [
   {
     path: '/account',
     name: 'Account',
-    component: Account
+    component: AccountWall
   },{
     path: '/parties',
     name: 'Parties',
     component: Parties,
-  },
-  {
+  },{
+    path: '/parties/make',
+    name: 'MakeParty',
+    component: MakeParty,
+  },{
     path: '/parties/:id',
     name: 'PartyIntro',
     component: PartyIntro,

@@ -1,44 +1,84 @@
 <template>
-    <div class="full">
-        <div class="section">
-            <h1>{{party.party_name}}</h1>
-            <p><span class="wizard-script">This is where we introduce ourselves, and write a little background about us. </span></p>
-            <router-link :to="blogRoute" class='btn btn-primary'>See blog!</router-link>
-        </div>
+  <div class="full">
+    <div v-if="this.party">
+      <div class="section">
+        <h1>{{party.party_name}}</h1>
+        <p>
+          <span
+            class="wizard-script"
+          >This is where we introduce ourselves, and write a little background about us.</span>
+        </p>
+        <router-link :to="blogRoute" class="btn btn-primary">See blog!</router-link>
+      </div>
+      <hr />
+      <div v-for="person in this.members" :key="person._id" :class="['section', person.script]">
+        <h3>{{person.given_name}}</h3>
+        <p>{{person.intro}}</p>
         <hr />
-        <div v-for="person in party.party_members" :key="person.adventurer_id" :class="['section', person.adventurer_script]">
-            <h3>{{person.adventurer_name}}</h3>
-            <p>{{person.adventurer_intro}}</p>
-            <hr />
-        </div>
-        <div class="section">
-            <router-link :to="blogRoute" class='btn btn-primary'>See blog!</router-link>
-        </div>
+      </div>
     </div>
+    <div v-else>
+      <h1>Loading...</h1>
+    </div>
+    <div class="section">
+      <router-link :to="blogRoute" class="btn btn-primary">See blog!</router-link>
+    </div>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-    name: 'PartyIntro',
-    computed: {
-        party() {
-            return this.$root.$data.parties[this.$route.params.id];
-        },
-        blogRoute() {
-            return this.$route.path + '/blog';
-        }
+  name: "PartyIntro",
+  data() {
+    return {
+      party: undefined,
+      members: []
+    };
+  },
+  async created() {
+    await this.getParty();
+  },
+  methods: {
+    async getMembers() {
+      try {
+        let result = await axios.post("/api/users/", {
+          ids: this.party.party_members
+        });
+        console.log(result);
+        this.members = result.data.users;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getParty() {
+      try {
+        // return this.$root.$data.parties[this.$route.params.id];
+        let result = await axios.get("/api/party/" + this.$route.params.id);
+        console.log(result);
+        this.party = result.data.party;
+        await this.getMembers();
+      } catch (error) {
+        console.error(error);
+      }
     }
-}
+  },
+  computed: {
+    blogRoute() {
+      return this.$route.path + "/blog";
+    }
+  }
+};
 </script>
 
 <style scoped>
 .right {
-    float: right;
-    margin-left: auto;
+  float: right;
+  margin-left: auto;
 }
 
 .btn {
-    display: flex;
-    align-self: center;
+  display: flex;
+  align-self: center;
 }
 </style>

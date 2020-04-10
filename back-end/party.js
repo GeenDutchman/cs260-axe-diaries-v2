@@ -10,15 +10,18 @@ const partySchema = new mongoose.Schema({
     party_name: String,
     party_image: String,
     party_description: String,
-    party_members: Array,
+    party_members: {
+        type: Array,
+        default: []
+    },
     party_page: String,
 });
 
-partySchema.methods.toJSON = function () {
-    var obj = this.toObject();
-    //just in case
-    return obj;
-}
+// partySchema.methods.toJSON = function () {
+//     var obj = this.toObject();
+//     //just in case
+//     return obj;
+// }
 
 const Party = mongoose.model('Party', partySchema);
 
@@ -30,13 +33,13 @@ const validMember = async (req, res, next) => {
             message: "no user provided"
         });
     }
-    if (!req.party_id || !req.body.party_id) {
+    if (!req.party || !req.body.party_id) {
         return res.status(400).send({
             message: "no party provided"
         });
     }
 
-    const party_id = req.party_id ? req.party_id : req.body.party_id;
+    const party_id = req.party ? req.party._id : req.body.party_id;
     try {
         const party = await Party.findOne({
             _id: party_id
@@ -81,7 +84,7 @@ router.post('/create', validUser, async (req, res) => {
         }
         
         const party = new Party({
-            party_name: req.body.given_name,
+            party_name: req.body.party_name,
             party_image: (req.body.party_image && req.body.party_image.length > 0 ? req.body.party_image : ''),
             party_description: (req.body.party_description ? req.body.party_description : ''),
             party_members: [req.user._id],
@@ -99,9 +102,9 @@ router.post('/create', validUser, async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-    let parties = [];
     try {
-        parties = Party.find();
+        const parties = await Party.find().sort({party_name: -1});
+        console.log(parties);
         return res.send({
             parties: parties
         });
@@ -111,15 +114,31 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get('/membership', validUser, async (req, res) => {
+    try {
+        let parties = req.user.parties.map(async (id) => {
+            return await Party.findById(id);
+        });
+        parties = await Promise.all(parties);
+        console.log(parties);
+        return res.send({
+            parties: parties
+        });
+    } catch (error) {
+        console.error('party get membership', error);
+        return res.sendStatus(500);    
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
-        const party = Party.findById(req.params.id);
+        const party = await Party.findById(req.params.id);
         if (!party) {
-            return req.status(400).send({
+            return res.status(400).send({
                 message: 'not a party'
             });
         }
-        req.send({
+        res.send({
             party: party
         });
     } catch (error) {

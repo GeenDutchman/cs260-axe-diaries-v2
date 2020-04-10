@@ -46,7 +46,7 @@ router.post("/", validUser, validMember, async (req, res) => {
 router.get("/:id", async (req, res) => {
     let entries = [];
     try {
-        entries = Entry.find({
+        entries = await Entry.find({
             party_id: req.params.id
         }).sort({order: 1});
         return res.send({
