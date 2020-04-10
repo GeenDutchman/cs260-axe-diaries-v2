@@ -1,10 +1,10 @@
 <template>
   <div class="full brand">
     <div class="section">
-      <h1>Welcome {{user.username}}!</h1>
+      <h1>Welcome{{ user ? ' ' + user.username : ''}}!</h1>
     </div>
     <div class="card-columns">
-      <div class="card color-primary-4" :class="[user.script]">
+      <div class="card color-primary-4" v-if="user" :class="[user.script]">
         <div id="info" class="card-body">
           <p>Given Name: {{user.given_name}}</p>
           <p>Family Name: {{user.family_name}}</p>
@@ -13,25 +13,25 @@
           <p>Intro: {{user.intro}}</p>
         </div>
       </div>
-      <party-card
-        src="/assets/logo.png"
-        v-bind:party_id="-1"
-        link='/parties/make'
-        party_name="Make a party!"
-        party_description="Make your own party!"
-        v-bind:party_members="[]"
-      />
 
       <div v-for="party in this.parties" :key="party._id">
         <party-card
           :src="(party.party_image ? party.party_image : '/assets/logo-bw.svg')"
-          :party_id="party.party_id"
+          :party_id="party._id"
           :party_name="party.party_name"
           :party_description="party.party_description"
           :party_members="party.party_members"
           :link="(party.party_page ? party.party_page : '/parties/' + party.party_id)"
         />
       </div>
+      <party-card
+        src="/assets/logo.png"
+        party_id="-1"
+        link='/parties/make'
+        party_name="Make a party!"
+        party_description="Make your own party!"
+        v-bind:party_members="[]"
+      />
     </div>
   </div>
 </template>
@@ -46,21 +46,20 @@ export default {
   },
   data() {
     return {
-      parties: []
+      parties: [],
+      user: undefined,
     };
   },
   computed: {
-    user() {
-      return this.$root.$data.user;
-    }
+
   },
   async created() {
     try {
-      await this.$root.getUser();
+      this.user = await this.$root.getUser();
       await this.getMembership();
     } catch (error) {
       this.$root.getUser(undefined, true);
-      this.$root.$router.push("Account");
+      this.$root.$router.push({name: "Account"});
     }
   },
   methods: {
