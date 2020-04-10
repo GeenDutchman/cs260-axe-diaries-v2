@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const argon2 = require("argon2");
-
 const router = express.Router();
 
 // This is the schema. Users have usernames and passwords. We solemnly promise to
@@ -11,6 +10,9 @@ const userSchema = new mongoose.Schema({
     family_name: String,
     hails_from: String,
     party_role: String,
+    intro: {
+        type: String,
+    },
     script: String,
     username: String,
     password: String,
@@ -239,6 +241,26 @@ router.get('/', validUser, async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.sendStatus(500);
+    }
+});
+
+//get a list of users
+router.post('/', validUser, async (req, res) => {
+    if (!req.ids || req.ids.length === 0) {
+        return res.status(400).send({
+            message: "no ids provided"
+        });
+    }
+    try {
+        let users = req.ids.map(await User.findById);
+        res.send({
+            users: users
+        });        
+    } catch (error) {
+        console.error(error);
+        return res.status(400).send({
+            message: "Error getting users"
+        });
     }
 });
 
