@@ -4,9 +4,7 @@
       <div class="section">
         <h1>{{party.party_name}}</h1>
         <p>
-          <span
-            class="wizard-script"
-          >This is where we introduce ourselves, and write a little background about us.</span>
+          <span class>This is where we introduce ourselves, and write a little background about us.</span>
         </p>
         <router-link :to="blogRoute" class="btn btn-primary">See blog!</router-link>
       </div>
@@ -41,14 +39,16 @@ export default {
   },
   methods: {
     async getMembers() {
-      try {
-        let result = await axios.post("/api/users/", {
-          ids: this.party.party_members
-        });
-        console.log(result);
-        this.members = result.data.users;
-      } catch (error) {
-        console.error(error);
+      if (this.party.party_members.length > 0) {
+        try {
+          let result = await axios.post("/api/users/", {
+            ids: this.party.party_members
+          });
+          console.log(result);
+          this.members = result.data.users;
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
     async getParty() {

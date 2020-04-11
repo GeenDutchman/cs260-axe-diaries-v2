@@ -7,6 +7,7 @@ Vue.config.productionTip = false
 
 var data = {
   user: undefined,
+  fonts: ['barbarian-script', 'druid-script', 'fighter-script', 'wizard-script'],
 };
 
 const getUser = async (provided_user=undefined, nocall=false) => {

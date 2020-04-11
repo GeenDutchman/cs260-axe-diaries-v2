@@ -14,7 +14,7 @@
             aria-controls="#sign-up"
             class="btn btn-primary"
           >Sign Up</a>
-          <div id="sign-up" class="collapse">
+          <div id="sign-up" :class="['collapse']">
             <form class="color-primary-4">
               <div class="form-group">
                 <label for="form_real_name">Given Name</label>
@@ -61,6 +61,29 @@
                   required
                   v-model="party_role"
                 />
+              </div>
+              <div :class="['form-group']">
+                <label for="form_script">Script</label>
+                <select
+                  id="fontSelector"
+                  :class="['form-control', script]"
+                  v-model="script"
+                  aria-placeholder="Select a font"
+                >
+                  <option value>Normal font</option>
+                  <option v-for="font in this.$root.$data.fonts" :key="font" :value="font">{{font}}</option>
+                </select>
+                <p :class="script">Sphinx of black quartz, judge my vow!</p>
+              </div>
+              <div :class="['form-group']">
+                <label for="form_intro">Introduction</label>
+                <textarea
+                  :class="['form-control', script]"
+                  v-model="intro"
+                  id="form_intro"
+                  aria-describedby="Introduction for user"
+                  placeholder="Introduce yourself"
+                ></textarea>
               </div>
               <div class="form-group">
                 <label for="form_username_sign_up">Username</label>
@@ -140,78 +163,83 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
-    name: "Account",
-    data() {
-      return {
-        given_name: '',
-        family_name: '',
-        hails_from: '',
-        party_role: '',
-        intro: 'a hero',
-        script: 'wizard-script',
-        r_username: '',
-        r_password: '',
-        r_password_2: '',
-        l_username: '',
-        l_password: '',
-      };
-    },
-    methods: {
-      async login() {
-        if (!this.l_username || !this.l_password) {
-          return;
-        }
-        try {
-          let response = await axios.post('/api/users/login', {
-            username: this.l_username,
-            password: this.l_password
-          });
-          await this.$root.getUser(response.data.user, true);
-        } catch (error) {
-          console.error(error);
-          await this.$root.getUser(undefined, true);
-        }
-        this.l_username = '';
-        this.l_password = '';
-      },
-      async register() {
-        if (!this.given_name || !this.r_username || !this.r_password || this.r_password !== this.r_password_2) {
-          return;
-        }
-        try {
-          let response = await axios.post('/api/users/register', {
-            given_name: this.given_name,
-            family_name: this.family_name,
-            hails_from: this.hails_from,
-            party_role: this.party_role,
-            intro: this.intro,
-            script: this.script,
-            username: this.r_username,
-            password: this.r_password_2
-          });
-          await this.$root.getUser(response.data.user, true);
-        } catch (error) {
-          console.error(error);
-          await this.$root.getUser(undefined, true);
-        }
-        this.given_name = '';
-        this.family_name = '';
-        this.hails_from = '';
-        this.party_role = '';
-        this.r_username = '';
-        this.r_password = '';
-        this.r_password_2 = '';
+  name: "Account",
+  data() {
+    return {
+      given_name: "",
+      family_name: "",
+      hails_from: "",
+      party_role: "",
+      intro: "",
+      script: "",
+      r_username: "",
+      r_password: "",
+      r_password_2: "",
+      l_username: "",
+      l_password: ""
+    };
+  },
+  methods: {
+    async login() {
+      if (!this.l_username || !this.l_password) {
+        return;
       }
+      try {
+        let response = await axios.post("/api/users/login", {
+          username: this.l_username,
+          password: this.l_password
+        });
+        await this.$root.getUser(response.data.user, true);
+      } catch (error) {
+        console.error(error);
+        await this.$root.getUser(undefined, true);
+      }
+      this.l_username = "";
+      this.l_password = "";
+    },
+    async register() {
+      if (
+        !this.given_name ||
+        !this.r_username ||
+        !this.r_password ||
+        this.r_password !== this.r_password_2
+      ) {
+        return;
+      }
+      try {
+        let response = await axios.post("/api/users/register", {
+          given_name: this.given_name,
+          family_name: this.family_name,
+          hails_from: this.hails_from,
+          party_role: this.party_role,
+          intro: this.intro,
+          script: this.script,
+          username: this.r_username,
+          password: this.r_password_2
+        });
+        await this.$root.getUser(response.data.user, true);
+      } catch (error) {
+        console.error(error);
+        await this.$root.getUser(undefined, true);
+      }
+      this.given_name = "";
+      this.family_name = "";
+      this.hails_from = "";
+      this.party_role = "";
+      this.r_username = "";
+      this.r_password = "";
+      this.r_password_2 = "";
     }
-}
+  }
+};
 </script>
 
 <style scoped>
 .card {
-    width: max-content;
-    align-self: center;
-    margin: 5%;
+  width: max-content;
+  align-self: center;
+  margin: 5%;
 }
 </style>
