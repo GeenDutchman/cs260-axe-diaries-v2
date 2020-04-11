@@ -14,6 +14,18 @@
         </div>
       </div>
 
+      <div v-for="party in this.invited" :key="party._id">
+        <party-card
+          :src="(party.party_image ? party.party_image : '/assets/logo-bw.svg')"
+          :party_id="party._id"
+          :party_name="party.party_name"
+          :party_description="party.party_description"
+          :party_members="party.party_members"
+          :link="(party.party_page ? party.party_page : '/parties/' + party._id)"
+          :invites="party.party_invites"
+        />
+      </div>
+
       <div v-for="party in this.parties" :key="party._id">
         <party-card
           :src="(party.party_image ? party.party_image : '/assets/logo-bw.svg')"
@@ -21,7 +33,8 @@
           :party_name="party.party_name"
           :party_description="party.party_description"
           :party_members="party.party_members"
-          :link="(party.party_page ? party.party_page : '/parties/' + party.party_id)"
+          :link="(party.party_page ? party.party_page : '/parties/' + party._id)"
+          :invites="party.party_invites"
         />
       </div>
       <party-card
@@ -31,6 +44,7 @@
         party_name="Make a party!"
         party_description="Make your own party!"
         v-bind:party_members="[]"
+        :invites="[]"
       />
     </div>
   </div>
@@ -47,6 +61,7 @@ export default {
   data() {
     return {
       parties: [],
+      invited: [],
       user: undefined,
     };
   },
@@ -68,6 +83,7 @@ export default {
         let response = await axios.get("/api/party/membership");
         console.log(response);
         this.parties = response.data.parties;
+        this.invited = response.data.invited;
       } catch (error) {
         console.error(error);
       }

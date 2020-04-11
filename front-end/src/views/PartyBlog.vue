@@ -92,7 +92,7 @@ export default {
       let users = this.members.filter(person => {
         return person._id === user_id;
       });
-      let the_name = users.length > 0 ? users[0].given_name : user[0].username;
+      let the_name = users.length > 0 ? users[0].given_name : users[0].username;
       return the_name;
     }
   }

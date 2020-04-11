@@ -19,11 +19,15 @@ const partySchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    party_invites: {
+        type: Array,
+        default: [],
+    }
 });
 
 // partySchema.methods.toJSON = function () {
 //     var obj = this.toObject();
-//     //just in case
+//     delete obj.party_invites;
 //     return obj;
 // }
 
@@ -127,10 +131,15 @@ router.get('/membership', validUser, async (req, res) => {
         let parties = req.user.parties.map(async (id) => {
             return await Party.findById(id);
         });
+        let invited = req.user.invites.map(async (id) => {
+            return await Party.findById(id);
+        })
         parties = await Promise.all(parties);
+        invited = await Promise.all(invited);
         console.log(parties);
         return res.send({
-            parties: parties
+            parties: parties,
+            invited: invited,
         });
     } catch (error) {
         console.error('party get membership', error);
@@ -174,8 +183,40 @@ router.delete('/destroy', validUser, async (req, res) => {
     }
 });
 
+router.put('/invite', validUser, validMember, async (req, res) => {
+    if(!req.body.username) {
+        return res.status(400).send({
+            message: 'no invitee username provided'
+        });
+    }
+    try {
+        // don't like accessing User here // Single Responsibility Principle // DAO needed?
+        var user = await User.findOne({username: req.body.username});
+        if (!user) {
+            return res.status(400).send({message: 'that user does not exist'});
+        }
+        var index = req.party.party_invites.indexOf(user._id);
+        if (index === -1) {
+
+            user.invites.push(req.party._id);
+            req.party.party_invites.push(user._id);
+            //TODO: find some better way to alert user //Single Responsibility Principle
+            await req.party.save();
+            console.log(req.party.party_invites);
+            await user.save();
+        }
+        return res.send({
+            message: (index >= 0 ? 'was already invited' : 'added to list'),
+            party_id: req.party._id,
+        });
+    } catch (error) {
+        console.error('party invite', error);
+        return res.status(500).send({message: 'invite error'});
+    }
+});
+
 router.put('/join', validUser, async (req, res) => {
-    if (!req.party_id || !req.body.party_id) {
+    if (!req.party_id && !req.body.party_id) {
         return res.status(400).send({
             message: "no party provided"
         });
@@ -192,10 +233,28 @@ router.put('/join', validUser, async (req, res) => {
                 message: "no party provided"
             });
         }
-        await party.party_members.push(req.user._id);
-        await party.save();
-        await req.user.parties.push(party._id);
-        await req.user.save();
+        const anyone = '*';
+        let party_index = party.party_invites.indexOf(req.user._id);
+        let user_index = req.user.invites.indexOf(party._id);
+        if (party.party_invites.indexOf(anyone) >= 0 || (party_index > -1 && user_index > -1)) {
+            //remove invites
+            if (party_index >= 0) {
+                party.party_invites.splice(party_index);
+            }
+            if (user_index >= 0) {
+                req.user.invites.splice(user_index);
+            }
+            //add to party
+            await party.party_members.push(req.user._id);
+            await party.save();
+            await req.user.parties.push(party._id);
+            await req.user.save();
+        } else {
+            return res.status(403).send({
+                message: "the invitation was not found"
+            });
+        }
+
 
         res.sendStatus(200);
     } catch (error) {
@@ -207,12 +266,12 @@ router.put('/join', validUser, async (req, res) => {
 
 router.delete('/leave', validUser, validMember, async (req, res) => {
     try {
-        var index = req.user.parties.index(req.party._id);
+        var index = req.user.parties.indexOf(req.party._id);
         if (index !== -1) {
             req.user.parties.splice(index);
             await req.user.save();
         }
-        index = req.party.party_members.index(req.user._id);
+        index = req.party.party_members.indexOf(req.user._id);
         if (index !== -1) {
             req.party.party_members.splice(index);
             await req.party.save();

@@ -1,6 +1,14 @@
 <template>
   <div class="section">
     <hr />
+    <h2>Invite a friend</h2>
+    <form @submit.prevent="inviteUser" class="form-group inviteForm">
+      <input class="form-control" v-model="invitation" placeholder="Friend's username" />
+      <p v-if="feedback">{{feedback}}</p>
+      <br />
+      <button class='btn btn-secondary center' type=submit :disabled="!invitation">Invite</button>
+    </form>
+    <hr />
     <h2>Add an entry</h2>
     <form @submit.prevent="addEntry" class="form-group adderForm">
       <!-- <select id="personSelector" class="form-control" v-model="adventurer" aria-placeholder="Select a party member">
@@ -30,6 +38,8 @@ export default {
       adventurer: undefined,
       entry: "",
       date: undefined,
+      invitation: '',
+      feedback: '',
     };
   },
   computed: {
@@ -62,6 +72,21 @@ export default {
     },
     async selectPersion() {
         this.adventurer = await this.$root.getUser();
+    },
+    async inviteUser() {
+      let oldFeedback = this.feedback;
+      if(this.invitation) {
+        try {
+          let result = await axios.put('/api/party/invite', {username: this.invitation, party_id: this.$route.params.id});
+          console.log(result);
+          this.feedback = result.data.message;
+        } catch (error) {
+          this.feedback = "an error occured!";
+          console.error(error);
+        }
+        this.invitation = '';
+        setTimeout(() => {this.feedback = oldFeedback;}, 3000);
+      }
     }
   }
 };
@@ -75,6 +100,7 @@ export default {
     margin-top: 1rem;
 }
 
+.inviteForm,
 .adderForm {
   flex-direction: column;
   display: flex;

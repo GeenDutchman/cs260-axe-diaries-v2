@@ -30,8 +30,7 @@
               </div>
               <div class="form-group">
                 <label for="form_party_description">Party Description</label>
-                <input
-                  type="textarea"
+                <textarea
                   class="form-control"
                   id="form_party_description"
                   aria-describedby="Party description"

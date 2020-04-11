@@ -4,7 +4,7 @@
       <div class="section">
         <h1>{{party.party_name}}</h1>
         <p>
-          <span class>This is where we introduce ourselves, and write a little background about us.</span>
+          <span class=''>{{party.party_description ? party.party_description : 'This is where we introduce ourselves, and write a little background about us!'}}</span>
         </p>
         <router-link :to="blogRoute" class="btn btn-primary">See blog!</router-link>
       </div>

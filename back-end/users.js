@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    invites: {
+        type: Array,
+        default: []
+    },
     role: {
         type: String,
         default: ""
@@ -115,6 +119,14 @@ router.post('/register', async (req, res) => {
         return res.status(400).send({
             message: "username and password are required"
         });
+    const illegal_chars = ['*', '@', '$'];
+    illegal_chars.forEach(char => {
+        if (req.body.username.indexOf(char) !== -1) {
+            return res.status(400).send({
+                message: "username may not contain '" + char + "'"
+            });
+        }
+    })
 
     try {
 

@@ -20,15 +20,24 @@
           <div class="col-6">{{person.party_role}}</div>
         </div>
       </div>
-      <a
-        :href="idGenerator('#party_description', party_id)"
-        class="btn btn-secondary"
-        data-toggle="collapse"
-        role="button"
-        aria-expanded="false"
-        aria-controls="#party_description"
-      >Expand</a>
-      <router-link :to="link" class="btn btn-primary">Go!</router-link>
+      <div id="button_area">
+        <a
+          :href="idGenerator('#party_description', party_id)"
+          class="btn btn-secondary"
+          data-toggle="collapse"
+          role="button"
+          aria-expanded="false"
+          aria-controls="#party_description"
+        >Expand</a>
+        <router-link :to="link" class="btn btn-primary">Go!</router-link>
+        <button
+          @click.prevent="acceptInvite"
+          id="invite_button"
+          v-if="!!this.main_user && (invites.includes(this.main_user._id) || invites.includes('*'))"
+        >
+          <router-link :to="link" class="btn btn-success">Join</router-link>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +48,8 @@ export default {
   name: "PartyCard",
   data() {
     return {
-      real_members: []
+      real_members: [],
+      main_user: undefined
     };
   },
   props: {
@@ -48,7 +58,8 @@ export default {
     party_name: String,
     party_description: String,
     party_members: Array,
-    link: String
+    link: String,
+    invites: Array
   },
   computed: {
     imageAlt(name) {
@@ -57,6 +68,7 @@ export default {
   },
   async created() {
     await this.getMembers();
+    this.main_user = await this.$root.getUser();
   },
   methods: {
     idGenerator(thing, id) {
@@ -74,6 +86,15 @@ export default {
           console.error(error);
         }
       }
+    },
+    async acceptInvite() {
+      if (this.main_user) {
+        try {
+          await axios.put("/api/party/join", { party_id: this.party_id });
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
   }
 };
@@ -83,5 +104,15 @@ export default {
 .card {
   width: auto;
   align-self: center;
+}
+
+#button_area {
+  display: flex;
+  flex-direction: row;
+}
+
+#invite_button {
+  display: flex;
+  margin-left: auto;
 }
 </style>
