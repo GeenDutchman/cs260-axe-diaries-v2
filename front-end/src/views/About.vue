@@ -2,7 +2,7 @@
   <div class="full brand">
     <div class="section">
       <h1>Thank you for your contributions!</h1>
-      <p>This project is made using <a href="https://getbootstrap.com/">Bootstrap</a> and <a href="https://vuejs.org/">Vue</a>.</p>
+      <p>This project is made using <a href="https://getbootstrap.com/">Bootstrap</a>, <a href="https://vuejs.org/">Vue</a> and <a href="https://www.mongodb.com/">Mongo database</a>.</p>
       <p>
         While this is for a school project, and we can claim fair-use, we
         still elected to use open-source images.
