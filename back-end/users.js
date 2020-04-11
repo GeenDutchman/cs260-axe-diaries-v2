@@ -228,6 +228,7 @@ router.post('/', async (req, res) => {
 router.delete("/logout", validUser, async (req, res) => {
     try {
         req.session = null;
+        res.session = null;
         res.sendStatus(200);
     } catch (error) {
         console.error('logout user', error);

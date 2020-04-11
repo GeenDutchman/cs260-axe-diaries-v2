@@ -24,7 +24,7 @@ router.post("/", validUser, validMember, async (req, res) => {
         });
     }
     try {
-        const order_num = req.party.party_entries.length;
+        const order_num = req.party.party_num_entries;
         const entry = new Entry({
             text: req.body.text,
             date: (req.body.date ? req.body.date : ''),
@@ -33,6 +33,9 @@ router.post("/", validUser, validMember, async (req, res) => {
             party_id: req.party._id,
         });
         await entry.save();
+        req.party.party_num_entries = req.party.party_num_entries + 1;
+        await req.party.save();
+
         return res.send({
             entry: entry
         });
@@ -48,7 +51,7 @@ router.get("/:id", async (req, res) => {
     try {
         entries = await Entry.find({
             party_id: req.params.id
-        }).sort({order: 1});
+        }).sort({order: -1});
         return res.send({
             entries: entries
         });

@@ -30,6 +30,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/about">About</router-link>
           </li>
+          <li class="nav-item" v-if="this.checkUser()" @click="logout">
+            <router-link class="nav-link" to="/" >Logout</router-link>
+          </li>
         </ul>
       </div>
     </nav>
@@ -55,7 +58,27 @@
 </style>
 
 <script>
+import axios from 'axios';
 export default {
-  name: "SwitchMenu"
+  name: "SwitchMenu",
+  data() {
+    return {
+      user: this.$root.$data.user
+    };
+  },
+  methods: {
+    async logout() {
+      console.log('logout sent');
+      try {
+        await axios.delete('/api/users/logout');
+        await this.$root.getUser(undefined, true);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    checkUser() {
+      return this.$root.$data.user;
+    }
+  }
 };
 </script>

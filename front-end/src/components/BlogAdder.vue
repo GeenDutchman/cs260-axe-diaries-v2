@@ -3,10 +3,10 @@
     <hr />
     <h2>Add an entry</h2>
     <form @submit.prevent="addEntry" class="form-group adderForm">
-      <select id="personSelector" class="form-control" v-model="adventurer" aria-placeholder="Select a party member">
+      <!-- <select id="personSelector" class="form-control" v-model="adventurer" aria-placeholder="Select a party member">
         <option :value="undefined">Select a party member</option>
         <option v-for="person in this.$parent.members" :key="person._id" :value="person">{{person.given_name}}</option>
-      </select>
+      </select> -->
       <p></p>
       <textarea v-model="entry" class="form-control" required placeholder="What happened?"></textarea>
       <p></p>
@@ -37,7 +37,8 @@ export default {
       return this.adventurer !== undefined && this.entry.length > 0;
     }
   },
-  created() {
+  async created() {
+    await this.selectPersion();
   },
   methods: {
     async addEntry() {
@@ -45,11 +46,12 @@ export default {
         // let entries = this.$root.$data.parties[this.$route.params.id].party_entries;
         // const newEntry = {entry_id: entries.length, text: this.entry, author_name: this.adventurer.adventurer_name, author_id: this.adventurer.adventurer_id, author_script: this.adventurer.adventurer_script};
         // entries.unshift(newEntry);
-        let entry = {text: this.entry, author_id: await this.$root.getUser()._id, date: (this.date ? this.date : ''), party_id: this.$route.params.id};
+        let entry = {text: this.entry, author_id: this.adventurer._id, date: (this.date ? this.date : ''), party_id: this.$route.params.id};
         try {
           let result = await axios.post('/api/blog/', entry);
           console.log(result);
-          this.$parent.blogEntries.push(result.data.entry);
+          // this.$parent.blogEntries.push(result.data.entry);
+          await this.$parent.getEntries();
         } catch (error) {
           console.error(error);
         }
@@ -58,8 +60,8 @@ export default {
         this.date = '';
       }
     },
-    selectPersion(someone) {
-        this.adventurer = someone;
+    async selectPersion() {
+        this.adventurer = await this.$root.getUser();
     }
   }
 };

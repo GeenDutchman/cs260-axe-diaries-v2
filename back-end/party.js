@@ -15,6 +15,10 @@ const partySchema = new mongoose.Schema({
         default: []
     },
     party_page: String,
+    party_num_entries: {
+        type: Number,
+        default: 0
+    },
 });
 
 // partySchema.methods.toJSON = function () {
@@ -33,7 +37,7 @@ const validMember = async (req, res, next) => {
             message: "no user provided"
         });
     }
-    if (!req.party || !req.body.party_id) {
+    if (!req.party && !req.body.party_id) {
         return res.status(400).send({
             message: "no party provided"
         });
@@ -88,12 +92,16 @@ router.post('/create', validUser, async (req, res) => {
             party_image: (req.body.party_image && req.body.party_image.length > 0 ? req.body.party_image : ''),
             party_description: (req.body.party_description ? req.body.party_description : ''),
             party_members: [req.user._id],
-            party_page: (req.body.party_page && req.body.party_page.length > 0 ? req.body.party_page : '')
+            party_page: (req.body.party_page && req.body.party_page.length > 0 ? req.body.party_page : ''),
+            party_num_entries: 0
         });
-        await party.save();
+        let newParty = await party.save();
+        req.user.parties.push(newParty._id);
+        const freshUser = await req.user.save();
 
         return res.send({
-            party: party
+            party: party,
+            user: freshUser,
         });
     } catch (error) {
         console.error('party create', error);
