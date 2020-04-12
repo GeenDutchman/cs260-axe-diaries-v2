@@ -68,12 +68,11 @@ export default {
   },
   methods: {
     async logout() {
-      console.log('logout sent');
       try {
         await axios.delete('/api/users/logout');
         await this.$root.getUser(undefined, true);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     },
     checkUser() {

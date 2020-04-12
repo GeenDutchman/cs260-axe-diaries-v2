@@ -61,10 +61,10 @@ export default {
     async getParties() {
       try {
         let result = await axios.get("/api/party");
-        console.log(result);
+        // console.log(result);
         this.parties = result.data.parties;
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     }
   },

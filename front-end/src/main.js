@@ -21,7 +21,7 @@ const getUser = async (provided_user=undefined, nocall=false) => {
         data.user = response.data.user;
       }
     } catch(error) {
-      console.error(error);
+      // console.error(error);
       data.user = undefined;
     }
   }

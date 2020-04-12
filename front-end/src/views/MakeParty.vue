@@ -93,10 +93,10 @@ export default {
             party_image: this.party_image,
             party_page: this.party_page,
           });
-          console.log(response);
+          // console.log(response);
           this.$root.$router.push('/parties/' + response.data.party._id);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
         this.party_name = '';
         this.party_description = '';

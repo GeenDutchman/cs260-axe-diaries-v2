@@ -193,7 +193,7 @@ export default {
         });
         await this.$root.getUser(response.data.user, true);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         await this.$root.getUser(undefined, true);
       }
       this.l_username = "";
@@ -221,7 +221,7 @@ export default {
         });
         await this.$root.getUser(response.data.user, true);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         await this.$root.getUser(undefined, true);
       }
       this.given_name = "";

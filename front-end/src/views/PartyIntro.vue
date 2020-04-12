@@ -44,10 +44,10 @@ export default {
           let result = await axios.post("/api/users/", {
             ids: this.party.party_members
           });
-          console.log(result);
+          // console.log(result);
           this.members = result.data.users;
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     },
@@ -55,11 +55,11 @@ export default {
       try {
         // return this.$root.$data.parties[this.$route.params.id];
         let result = await axios.get("/api/party/" + this.$route.params.id);
-        console.log(result);
+        // console.log(result);
         this.party = result.data.party;
         await this.getMembers();
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     }
   },

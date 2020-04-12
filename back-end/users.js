@@ -40,7 +40,7 @@ userSchema.pre('save', async function (next) {
         this.password = hash;
         next();
     } catch (error) {
-        console.error('user pre save', error);
+        // console.error('user pre save', error);
         next(error);
     }
 });
@@ -95,7 +95,7 @@ const validUser = async (req, res, next) => {
         req.user = user;
     } catch (error) {
         // Return an error if user does not exist.
-        console.error('valid user', error);
+        // console.error('valid user', error);
         return res.status(403).send({
             message: "not logged in"
         });
@@ -159,8 +159,8 @@ router.post('/register', async (req, res) => {
             user: user
         });
     } catch (error) {
-        console.error('user register', error);
-        return res.sendStatus(500);
+        // console.error('user register', error);
+        return res.status(500).send({message: "error registering user"});
     }
 });
 
@@ -194,8 +194,8 @@ router.post('/login', async (req, res) => {
             user: user
         });
     } catch (error) {
-        console.error('user login', error);
-        return res.sendStatus(500);
+        // console.error('user login', error);
+        return res.status(500).send({message: "error logging in"});
     }
 });
 
@@ -207,8 +207,8 @@ router.get('/', validUser, async (req, res) => {
             user: req.user
         });
     } catch (error) {
-        console.error('get / user', error);
-        return res.sendStatus(500);
+        // console.error('get / user', error);
+        return res.status(500).send({message: "error getting logged in user"});
     }
 });
 
@@ -224,12 +224,11 @@ router.post('/', async (req, res) => {
             return await User.findById(id);
         });
         users = await Promise.all(users);
-        console.log(users);
         res.send({
             users: users
         });        
     } catch (error) {
-        console.error('post / user', error);
+        // console.error('post / user', error);
         return res.status(400).send({
             message: "Error getting users"
         });
@@ -243,8 +242,8 @@ router.delete("/logout", validUser, async (req, res) => {
         res.session = null;
         res.sendStatus(200);
     } catch (error) {
-        console.error('logout user', error);
-        return res.sendStatus(500);
+        // console.error('logout user', error);
+        return res.status(500).send({message: "error logout user"});
     }
 });
 

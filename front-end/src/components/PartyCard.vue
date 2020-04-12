@@ -80,10 +80,10 @@ export default {
           let result = await axios.post("/api/users/", {
             ids: this.party_members
           });
-          console.log(result);
+          // console.log(result);
           this.real_members = result.data.users;
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     },
@@ -92,7 +92,7 @@ export default {
         try {
           await axios.put("/api/party/join", { party_id: this.party_id });
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     }

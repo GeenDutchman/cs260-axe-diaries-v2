@@ -59,11 +59,11 @@ export default {
         let entry = {text: this.entry, author_id: this.adventurer._id, date: (this.date ? this.date : ''), party_id: this.$route.params.id};
         try {
           let result = await axios.post('/api/blog/', entry);
-          console.log(result);
+          // console.log(result);
           // this.$parent.blogEntries.push(result.data.entry);
           await this.$parent.getEntries();
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
         this.adventurer = undefined;
         this.entry = '';
@@ -78,11 +78,11 @@ export default {
       if(this.invitation) {
         try {
           let result = await axios.put('/api/party/invite', {username: this.invitation, party_id: this.$route.params.id});
-          console.log(result);
+          // console.log(result);
           this.feedback = result.data.message;
         } catch (error) {
           this.feedback = "an error occured!";
-          console.error(error);
+          // console.error(error);
         }
         this.invitation = '';
         setTimeout(() => {this.feedback = oldFeedback;}, 3000);

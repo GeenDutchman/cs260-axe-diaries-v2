@@ -81,11 +81,10 @@ export default {
     async getMembership() {
       try {
         let response = await axios.get("/api/party/membership");
-        console.log(response);
         this.parties = response.data.parties;
         this.invited = response.data.invited;
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     }
   }

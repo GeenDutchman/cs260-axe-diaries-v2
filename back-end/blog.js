@@ -40,8 +40,8 @@ router.post("/", validUser, validMember, async (req, res) => {
             entry: entry
         });
     } catch (error) {
-        console.error('blog post', error);
-        return res.sendStatus(500);       
+        // console.error('blog post', error);
+        return res.status(500).send({message: "error making blog post"});       
     }
 });
 
@@ -56,8 +56,8 @@ router.get("/:id", async (req, res) => {
             entries: entries
         });
     } catch (error) {
-        console.error('blog get id', error);
-        return res.sendStatus(500);
+        // console.error('blog get id', error);
+        return res.status(500).send({message: "problem getting the blog"});
     }
 });
 

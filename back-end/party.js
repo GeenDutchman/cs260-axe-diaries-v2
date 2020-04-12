@@ -108,21 +108,20 @@ router.post('/create', validUser, async (req, res) => {
             user: freshUser,
         });
     } catch (error) {
-        console.error('party create', error);
-        return res.sendStatus(500);
+        // console.error('party create', error);
+        return res.status(500).send({message: "error creating party"});
     }
 });
 
 router.get("/", async (req, res) => {
     try {
         const parties = await Party.find().sort({party_name: -1});
-        console.log(parties);
         return res.send({
             parties: parties
         });
     } catch (error) {
-        console.error('party get all', error);
-        return res.sendStatus(500);
+        // console.error('party get all', error);
+        return res.status(500).send({message: "error getting all parties"});
     }
 });
 
@@ -136,14 +135,13 @@ router.get('/membership', validUser, async (req, res) => {
         })
         parties = await Promise.all(parties);
         invited = await Promise.all(invited);
-        console.log(parties);
         return res.send({
             parties: parties,
             invited: invited,
         });
     } catch (error) {
-        console.error('party get membership', error);
-        return res.sendStatus(500);    
+        // console.error('party get membership', error);
+        return res.status(500).send({message: "error getting party membership"});
     }
 });
 
@@ -159,8 +157,8 @@ router.get('/:id', async (req, res) => {
             party: party
         });
     } catch (error) {
-        console.error('party get id', error);
-        return res.sendStatus(500);
+        // console.error('party get id', error);
+        return res.status(500).send({message: "error getting party " + req.params.id});
     }
 })
 
@@ -178,8 +176,8 @@ router.delete('/destroy', validUser, async (req, res) => {
     try {
         await Party.findByIdAndDelete(req.body.party_id);
     } catch (error) {
-        console.error('party destroy', error);
-        return res.sendStatus(500); 
+        // console.error('party destroy', error);
+        return res.status(500).send({message: "error destroying party " + error}); 
     }
 });
 
@@ -202,7 +200,6 @@ router.put('/invite', validUser, validMember, async (req, res) => {
             req.party.party_invites.push(user._id);
             //TODO: find some better way to alert user //Single Responsibility Principle
             await req.party.save();
-            console.log(req.party.party_invites);
             await user.save();
         }
         return res.send({
@@ -210,7 +207,7 @@ router.put('/invite', validUser, validMember, async (req, res) => {
             party_id: req.party._id,
         });
     } catch (error) {
-        console.error('party invite', error);
+        // console.error('party invite', error);
         return res.status(500).send({message: 'invite error'});
     }
 });
@@ -258,8 +255,8 @@ router.put('/join', validUser, async (req, res) => {
 
         res.sendStatus(200);
     } catch (error) {
-        console.error('party join', error);
-        return res.sendStatus(500);  
+        // console.error('party join', error);
+        return res.status(500).send({message: "error joining party"});  
     }
 });
 
@@ -279,8 +276,8 @@ router.delete('/leave', validUser, validMember, async (req, res) => {
 
         res.sendStatus(200);
     } catch (error) {
-        console.error('party leave', error);
-        return res.sendStatus(500);  
+        // console.error('party leave', error);
+        return res.status(500).send({message: "error leaving party"});  
     }
 });
 
