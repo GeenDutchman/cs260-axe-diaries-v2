@@ -58,7 +58,7 @@ export default {
         // entries.unshift(newEntry);
         let entry = {text: this.entry, author_id: this.adventurer._id, date: (this.date ? this.date : ''), party_id: this.$route.params.id};
         try {
-          let result = await axios.post('/api/blog/', entry);
+          await axios.post('/api/blog/', entry);
           // console.log(result);
           // this.$parent.blogEntries.push(result.data.entry);
           await this.$parent.getEntries();
